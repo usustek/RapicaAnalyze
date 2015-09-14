@@ -30,11 +30,9 @@ angular.module('rapicaAnalyzeApp')
           var minIdx = pt[name][0];
           var maxIdx = pt[name][1];
           angular.forEach(hexStrDisp.children, function (elm, index) {
-            if((minIdx <= index) && (index <= maxIdx)){
-              elm.style.color = "lime";
-            }else{
-              elm.style.color = "black";
-            }
+            elm.style.color = ((minIdx <= index) && (index <= maxIdx))
+                          ? "lightseagreen"
+                          : "black";
           });
         }
       }
