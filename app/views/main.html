@@ -2,8 +2,36 @@
   <input label="Hex DATA:" style="width:50em" ng-model="hexData"></input>
   <input type="button" value="Hoge" ng-click="parse()"></input>
 </div>
- 
-<div class="marketing">
-  <h3>{{ parsedData.date }}</h3>
-  <h3>{{ parsedData.corp }}</h3>
+
+<div>
+  <table>
+    <tr>
+      <td>履歴データ</td>
+      <td id="hexStrDisp" ng-bind-html="parsedData.hexStr"></td>
+    </tr>
+    <tr ng-click="onselect('date')">
+      <td>日付</td>
+      <td>{{ parsedData.date }}</td>
+    </tr>
+    <tr ng-click="onselect('corp')">
+      <td>運営会社</td>
+      <td>{{ parsedData.corp }}</td>
+    </tr>
+    <tr ng-click="onselect('busGroup')">
+      <td>系統</td>
+      <td>{{ parsedData.busGroup }}</td>
+    </tr>
+    <tr ng-click="onselect('busStop')">
+      <td>バス停</td>
+      <td>{{ parsedData.busStop }}</td>
+    </tr>
+    <tr ng-click="onselect('using')">
+      <td>使用種別</td>
+      <td>{{ parsedData.using }}</td>
+    </tr>
+    <tr ng-click="onselect('remain')">
+      <td>残額</td>
+      <td>{{ parsedData.remain }}</td>
+    </tr>
+  </table>
 </div>
