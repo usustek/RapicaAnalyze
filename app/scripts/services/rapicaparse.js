@@ -91,14 +91,12 @@ angular.module('rapicaAnalyzeApp')
         if(res.isCity) {
           val = (hexs[7] << 8 ) | hexs[8];
           res.point["busGroup"] = [14,17];
+          res.busGroup = "0x" + ("0000"+ val.toString(16)).substr(-4);
         }
         else{
           val = (hexs[7] << 16) | (hexs[8] << 8) | hexs[9];
           res.point["busGroup"] = [14,19];
-        }
-        
-        if(null !== val){
-          res.busGroup = "0x" + ("0000"+ val.toString(16)).substr(-4);
+          res.busGroup = "0x" + ("000000"+ val.toString(16)).substr(-6);
         }
       },
       
@@ -108,13 +106,11 @@ angular.module('rapicaAnalyzeApp')
         if(res.isCity){
           val = (hexs[4] << 16) | (hexs[5] << 8) | hexs[6];
           res.point["busStop"] = [8,13];
+          res.busStop = "0x" + ("000000" + val.toString(16)).substr(-6);
         }
         else{
-          val = (hexs[5] << 8) | hexs[6];
-          res.point["busStop"] = [10,13];
-        }
-        
-        if (val !== null){
+          val = (hexs[10] << 8) | hexs[11];
+          res.point["busStop"] = [20,23];
           res.busStop = "0x" + ("0000" + val.toString(16)).substr(-4);
         }
       },
@@ -137,8 +133,14 @@ angular.module('rapicaAnalyzeApp')
           case 0x41:
             res.using = "降車";
             break;
+          case 0x43:
+            res.using = "清算";
+            break;
           case 0x44:
             res.using = "降車(割)";
+            break;
+          case 0x47:
+            res.using = "降車(船)";
             break;
         }
       },
