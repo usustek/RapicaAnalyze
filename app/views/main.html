@@ -1,19 +1,9 @@
 <div class="jumbotron">
-  <paper-input label="Hex DATA:" style="width:50em"></paper-input>
-  <paper-button raised>Hoge</paper-button>
+  <input label="Hex DATA:" style="width:50em" ng-model="hexData"></input>
+  <input type="button" value="Hoge" ng-click="parse()"></input>
 </div>
  
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
-
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
-
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
+<div class="marketing">
+  <h3>{{ parsedData.date }}</h3>
+  <h3>{{ parsedData.corp }}</h3>
 </div>
