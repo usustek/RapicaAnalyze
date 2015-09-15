@@ -1,37 +1,58 @@
-<div class="jumbotron">
-  <input font-size="100%" label="Hex DATA:" style="width:50em" ng-model="hexData"></input>
-  <input font-size="100%" type="button" value="Hoge" ng-click="parse()"></input>
+<link href='https://fonts.googleapis.com/css?family=Anonymous+Pro:700' rel='stylesheet' type='text/css'>
+<div class="jumbotron" onload="loadCookie()">
+  <input style="width:20em;height:25px;font-size:20px;font-family: 'Anonymous Pro', ;" ng-model="hexData1"></input>
+  <input style="width:20em;height:25px;font-size:20px;font-family: 'Anonymous Pro', ;" ng-model="hexData2"></input><BR>
+  <input type="button" value="Parse" ng-click="parse()"style= "height:25px;font-size:20px"></input>
+  <input type="button" value="Clear" ng-click="clear()"style= "height:25px;font-size:20px"></input>
 </div>
-
-<div>
-  <table>
-    <tr>
-      <td>履歴データ</td>
-      <td id="hexStrDisp" ng-bind-html="parsedData.hexStr"></td>
-    </tr>
-    <tr ng-click="onselect('date')">
-      <td>日付</td>
-      <td>{{ parsedData.date }}</td>
-    </tr>
-    <tr ng-click="onselect('corp')">
-      <td>運営会社</td>
-      <td>{{ parsedData.corp }}</td>
-    </tr>
-    <tr ng-click="onselect('busGroup')">
-      <td>系統</td>
-      <td>{{ parsedData.busGroup }}</td>
-    </tr>
-    <tr ng-click="onselect('busStop')">
-      <td>バス停</td>
-      <td>{{ parsedData.busStop }}</td>
-    </tr>
-    <tr ng-click="onselect('using')">
-      <td>使用種別</td>
-      <td>{{ parsedData.using }}</td>
-    </tr>
-    <tr ng-click="onselect('remain')">
-      <td>残額</td>
-      <td>{{ parsedData.remain }}</td>
-    </tr>
+<hr>
+<div class="container">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td>要素</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>履歴データ</td>
+        <td colSpan="2" id="hexStrDisp1" ng-bind-html="parseHexStr1" style="font-family: 'Anonymous Pro', ;"></td>
+      </tr>
+      <tr>
+        <td>履歴データ</td>
+        <td colSpan="2" id="hexStrDisp2" ng-bind-html="parseHexStr2" style="font-family: 'Anonymous Pro', ;"></td>
+      </tr>
+      <tr ng-click="onselect('date')">
+        <td>日付</td>
+        <td>{{ parsedData1.date | date: 'yyyy/MM/dd hh:mm'}}</td>
+        <td>{{ parsedData2.date | date: 'yyyy/MM/dd hh:mm'}}</td>
+      </tr>
+      <tr ng-click="onselect('corp')">
+        <td>運営会社</td>
+        <td>{{ parsedData1.corp }}</td>
+        <td>{{ parsedData2.corp }}</td>
+      </tr>
+      <tr ng-click="onselect('busGroup')">
+        <td>系統</td>
+        <td>{{ parsedData1.busGroup }}</td>
+        <td>{{ parsedData2.busGroup }}</td>
+      </tr>
+      <tr ng-click="onselect('busStop')">
+        <td>バス停</td>
+        <td>{{ parsedData1.busStop }}</td>
+        <td>{{ parsedData2.busStop }}</td>
+      </tr>
+      <tr ng-click="onselect('using')">
+        <td>使用種別</td>
+        <td>{{ parsedData1.using }}</td>
+        <td>{{ parsedData2.using }}</td>
+      </tr>
+      <tr ng-click="onselect('remain')">
+        <td>残額</td>
+        <td>{{ parsedData1.remain }}</td>
+        <td>{{ parsedData2.remain }}</td>
+      </tr>
+    </tbody>
   </table>
 </div>

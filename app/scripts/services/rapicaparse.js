@@ -8,7 +8,7 @@
  * Service in the rapicaAnalyzeApp.
  */
 angular.module('rapicaAnalyzeApp')
-  .service('RapicaParse', function () {
+  .service('RapicaParse', function (RapicaData) {
     return {
       parse: function(hexStr){
         hexStr = hexStr.trim();
@@ -81,7 +81,7 @@ angular.module('rapicaAnalyzeApp')
             res.corp = "林田";
             break;
           default:
-            res.corp = "";
+            res.corp = "不明";
             break;
         }
       },
@@ -107,6 +107,10 @@ angular.module('rapicaAnalyzeApp')
           val = (hexs[4] << 16) | (hexs[5] << 8) | hexs[6];
           res.point["busStop"] = [8,13];
           res.busStop = "0x" + ("000000" + val.toString(16)).substr(-6);
+          var nm = RapicaData.getStopCity(val);
+          if ( (nm !== null) && (nm !== '')){
+            res.busStop += " " + nm;
+          }
         }
         else{
           val = (hexs[10] << 8) | hexs[11];
@@ -141,6 +145,9 @@ angular.module('rapicaAnalyzeApp')
             break;
           case 0x47:
             res.using = "降車(船)";
+            break;
+          default:
+            res.using = "不明";
             break;
         }
       },
