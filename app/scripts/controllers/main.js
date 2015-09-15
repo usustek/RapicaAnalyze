@@ -34,6 +34,9 @@ angular.module('rapicaAnalyzeApp')
       if(($scope.hexData2 !== null) && ($scope.hexData2 !== "")){
         $scope.parseHexStr2 = $scope.createHexStr($scope.hexData2, 2);
         $scope.parsedData2 = RapicaParse.parse($scope.hexData2);
+      }else{
+        $scope.parseHexStr2 = "";
+        $scope.parsedData = null;
       }
       $scope.onselect('');
       $scope.refreshData();
@@ -42,7 +45,7 @@ angular.module('rapicaAnalyzeApp')
     $scope.createHexStr = function(hexStr, dispIdx){
       var str = "";
       hexStr.split('').forEach(function(element, index) {
-        str += "<span id='char" + index + "' onclick='onselectHex(" + index + "," + dispIdx + ")'>" + element + "</span>";
+        str += "<span class='char" + index + "'>" + element + "</span>";
         //str += "<span id='char${index}'>${element}</span>";
       }, this);
       
@@ -75,6 +78,30 @@ angular.module('rapicaAnalyzeApp')
           }
         }
       });
+    };
+    
+    $scope.onselectHex = function($event, dispIdx) {
+      var ary = [[], [hexStrDisp1, $scope.parsedData1], [hexStrDisp2, $scope.parsedData2]];
+      
+      var disp = ary[dispIdx][0];
+      var info = ary[dispIdx][1];
+      var target = $event.target;
+      if((disp !== null) && (info !== null) && (target.localName === "span")){
+        if(target.className.match(/char(\d+)/)){
+          var idx = parseInt(RegExp.$1);
+          
+          angular.forEach(Object.keys(info.point), function(key) {
+            var minIdx = info.point[key][0];
+            var maxIdx = info.point[key][1];
+            
+            if ((minIdx <= idx) && (idx <= maxIdx)){
+              $scope.onselect(key);
+              return;
+            }
+          });
+        }
+      }
+      
     };
     
     $scope.refreshData = function(){
