@@ -10,7 +10,7 @@
 angular.module('rapicaAnalyzeApp')
   .service('RapicaParse', function (RapicaData) {
     return {
-      parse: function(hexStr){
+      parse: function(res, hexStr){
         hexStr = hexStr.trim();
         
         if (hexStr.length === 32) {
@@ -19,20 +19,20 @@ angular.module('rapicaAnalyzeApp')
             var dat = parseInt(hexStr.charAt(i+0)+hexStr.charAt(i+1), 16);
             hexs.push(dat);
           }
-          var res = { point: {} };
+          res.point = {};
           
           this.parseHexStr(res, hexStr);
           this.parseDate(res, [hexs[0], hexs[1], hexs[2]]);
           this.parseCorp(res, hexs[3]);
           this.parseBusGroup(res, hexs);
           this.parseBusStop(res, hexs);
+          this.parseDevice(res, hexs);
           this.parseUsing(res, hexs);
           this.parseRemain(res, hexs);
           
-          return res;
         }
         
-        return {};
+        return res;
       },
       
       parseHexStr: function(res, hexStr){
@@ -64,7 +64,7 @@ angular.module('rapicaAnalyzeApp')
         switch(corp){
           case 1:
             res.isCity = true;
-            res.corp = "鹿児島市";
+            res.corp = "交通局";
             break;
           case 2:
             res.isCity = true;
@@ -91,12 +91,12 @@ angular.module('rapicaAnalyzeApp')
         if(res.isCity) {
           val = (hexs[7] << 8 ) | hexs[8];
           res.point["busGroup"] = [14,17];
-          res.busGroup = "0x" + ("0000"+ val.toString(16)).substr(-4);
+          res.busGroup = "0x" + ("0000"+ val.toString(16).toUpperCase()).substr(-4);
         }
         else{
-          val = (hexs[7] << 16) | (hexs[8] << 8) | hexs[9];
-          res.point["busGroup"] = [14,19];
-          res.busGroup = "0x" + ("000000"+ val.toString(16)).substr(-6);
+          val = (hexs[5] << 8) | hexs[6];
+          res.point["busGroup"] = [10, 13];
+          res.busGroup = "0x" + ("0000" + val.toString(16).toUpperCase()).substr(-4);
         }
       },
       
@@ -106,7 +106,7 @@ angular.module('rapicaAnalyzeApp')
         if(res.isCity){
           val = (hexs[4] << 16) | (hexs[5] << 8) | hexs[6];
           res.point["busStop"] = [8,13];
-          res.busStop = "0x" + ("000000" + val.toString(16)).substr(-6);
+          res.busStop = "0x" + ("000000" + val.toString(16).toUpperCase()).substr(-6);
           var nm = RapicaData.getStopCity(val);
           if ( (nm !== null) && (nm !== '')){
             res.busStop += " " + nm;
@@ -115,7 +115,21 @@ angular.module('rapicaAnalyzeApp')
         else{
           val = (hexs[10] << 8) | hexs[11];
           res.point["busStop"] = [20,23];
-          res.busStop = "0x" + ("0000" + val.toString(16)).substr(-4);
+          res.busStop = "0x" + ("0000" + val.toString(16).toUpperCase()).substr(-4);
+        }
+      },
+      
+      parseDevice : function(res, hexs){
+        var val = null;
+        if (res.isCity) {
+          val = (hexs[9] << 16) | (hexs[10] << 8) | hexs[11];
+          res.point["device"] = [18, 23];
+          res.device = "0x" + ("000000" + val.toString(16).toUpperCase()).substr(-6);
+        } else {
+          // いわさきは系統と装置は逆？？？
+          val = (hexs[7] << 16) | (hexs[8] << 8) | hexs[9];
+          res.point["device"] = [14,19];
+          res.device = "0x" + ("000000"+ val.toString(16).toUpperCase()).substr(-6);
         }
       },
       
@@ -133,6 +147,9 @@ angular.module('rapicaAnalyzeApp')
             break;
           case 0x30:
             res.using = "乗車";
+            break;
+          case 0x40:
+            res.using = "積増";
             break;
           case 0x41:
             res.using = "降車";

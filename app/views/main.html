@@ -1,58 +1,58 @@
 <link href='https://fonts.googleapis.com/css?family=Anonymous+Pro:700' rel='stylesheet' type='text/css'>
 <div class="container">
-  <div class="jumbotron" onload="loadCookie()">
-    <input style="width:20em;height:25px;font-size:20px;font-family: 'Anonymous Pro', ;" ng-model="hexData1"></input>
-    <input style="width:20em;height:25px;font-size:20px;font-family: 'Anonymous Pro', ;" ng-model="hexData2"></input>
+  <div class="jumbotron">
+    <h2>ラピカの履歴データ</h2>
+    <input type="button" value="Parse" ng-click="parse()" style="height:32px;font-size:20px"></input>
+    <input type="button" value="Clear" ng-click="clear()" style="height:32px;font-size:20px"></input>
+    <input type="button" value="Add" ng-click="add()" style="height:32px;font-size:20px"></input>
     <BR>
-    <input type="button" value="Parse" ng-click="parse()" style="height:25px;font-size:20px"></input>
-    <input type="button" value="Clear" ng-click="clear()" style="height:25px;font-size:20px"></input>
+    <input ng-repeat-start="r in rapica" style="width:20em;height:32px;font-size:20px;font-family: 'Anonymous Pro', ;" ng-model="rapica[$index].hexData"></input>
+    <input type="button" value="+" ng-click="add($index)"></input>
+    <input ng-repeat-end type="button" value="x" ng-click="remove($index)"></input>
   </div>
   <div>
-    <table class="table table-bordered">
-      <thead>
-        <th>
-          <td>要素</td>
-          <td colSpan="2"></td>
-        </th>
+    <h2>履歴データの解析結果</h2>
+    <table class="table">
+      <thead ng-click="onselect('')">
+        <th>要素</th>
+        <th colspan="{{rapica.length}}">データ</th>
       </thead>
-      <tbody>
-        <tr ng-click="onselectHex($event, 1)">
-          <td>履歴データ</td>
-          <td colSpan="2" id="hexStrDisp1" ng-bind-html="parseHexStr1" style="font-family: 'Anonymous Pro', ;"></td>
+      <tbody id="tableRows">
+        <tr ng-repeat="r in rapica">
+          <td ng-if="$index === 0" rowspan="{{rapica.length}}"><b>履歴データ</b></td>
+          <td class="hexData"
+              colSpan="{{rapica.length}}"
+              ng-click="onselectHex($event, $index)"
+              ng-bind-html="r.hexDataHtml"
+              style="font-size:20px;font-family: 'Anonymous Pro', ;"></td>
         </tr>
-        <tr ng-if="hexData2 !== ''" ng-click="onselectHex($event, 2)">
-          <td>履歴データ</td>
-          <td colSpan="2" id="hexStrDisp2" ng-bind-html="parseHexStr2" style="font-family: 'Anonymous Pro', ;"></td>
+        <tr class="date" ng-click="onselect('date')">
+          <td><b>日付</b></td>
+          <td ng-repeat="r in rapica">{{ r.date | date: 'yyyy/MM/dd HH:mm'}}</td>
         </tr>
-        <tr ng-click="onselect('date')">
-          <td>日付</td>
-          <td>{{ parsedData1.date | date: 'yyyy/MM/dd hh:mm'}}</td>
-          <td>{{ parsedData2.date | date: 'yyyy/MM/dd hh:mm'}}</td>
+        <tr class="corp" ng-click="onselect('corp')">
+          <td><b>運営会社</b></td>
+          <td ng-repeat="r in rapica">{{ r.corp }}</td>
         </tr>
-        <tr ng-click="onselect('corp')">
-          <td>運営会社</td>
-          <td>{{ parsedData1.corp }}</td>
-          <td>{{ parsedData2.corp }}</td>
+        <tr class="busGroup" ng-click="onselect('busGroup')">
+          <td><b>系統</b></td>
+          <td ng-repeat="r in rapica">{{ r.busGroup }}</td>
         </tr>
-        <tr ng-click="onselect('busGroup')">
-          <td>系統</td>
-          <td>{{ parsedData1.busGroup }}</td>
-          <td>{{ parsedData2.busGroup }}</td>
+        <tr class="busStop" ng-click="onselect('busStop')">
+          <td><b>バス停</b></td>
+          <td ng-repeat="r in rapica">{{ r.busStop }}</td>
         </tr>
-        <tr ng-click="onselect('busStop')">
-          <td>バス停</td>
-          <td>{{ parsedData1.busStop }}</td>
-          <td>{{ parsedData2.busStop }}</td>
+        <tr class="device" ng-click="onselect('device')">
+          <td><b>装置</b></td>
+          <td ng-repeat="r in rapica">{{ r.device }}</td>
         </tr>
-        <tr ng-click="onselect('using')">
-          <td>使用種別</td>
-          <td>{{ parsedData1.using }}</td>
-          <td>{{ parsedData2.using }}</td>
+        <tr class="using" ng-click="onselect('using')">
+          <td><b>使用種別</b></td>
+          <td ng-repeat="r in rapica">{{ r.using }}</td>
         </tr>
-        <tr ng-click="onselect('remain')">
-          <td>残額</td>
-          <td>{{ parsedData1.remain }}</td>
-          <td>{{ parsedData2.remain }}</td>
+        <tr class="remain" ng-click="onselect('remain')">
+          <td><b>残額</b></td>
+          <td ng-repeat="r in rapica">{{ r.remain }}</td>
         </tr>
       </tbody>
     </table>
