@@ -54,22 +54,7 @@ angular.module('rapicaAnalyzeApp')
       });
       $scope.rapica = tmp;
       $scope.saveCookie();
-      
-      // if(($scope.hexData1 === '') && ($scope.hexData2 !== '')){
-      //   $scope.hexData1 = $scope.hexData2;
-      //   $scope.hexData2 = "";
-      // }
-      // $scope.saveCookie();
-      
-      // $scope.parseHexStr1 = $scope.createHexStr($scope.hexData1, 1);
-      // $scope.parsedData1 = RapicaParse.parse($scope.hexData1);
-      // if(($scope.hexData2 !== null) && ($scope.hexData2 !== "")){
-      //   $scope.parseHexStr2 = $scope.createHexStr($scope.hexData2, 2);
-      //   $scope.parsedData2 = RapicaParse.parse($scope.hexData2);
-      // }else{
-      //   $scope.parseHexStr2 = "";
-      //   $scope.parsedData = null;
-      // }
+
       $scope.onselect('');
       $scope.refreshData();
     };
@@ -152,9 +137,6 @@ angular.module('rapicaAnalyzeApp')
     };    
 
     $scope.loadCookie = function() {
-      // $scope.hexData1 = $cookies.get("data1") !== null ? $cookies.get("data1") : "";
-      // $scope.hexData2 = $cookies.get("data2") !== null ? $cookies.get("data2") : "";
-      
       $scope.rapica = [];
 
       var cnt = $cookies.get("rapicaDataCount");
@@ -180,11 +162,12 @@ angular.module('rapicaAnalyzeApp')
     };
     
     $scope.saveCookie = function() {
-      // $cookies.put("data1", $scope.hexData1);
-      // $cookies.put("data2", $scope.hexData2);
-      $cookies.put("rapicaDataCount", $scope.rapica.length);
+      var dt = new Date();
+      dt.setMonth(dt.getMonth() +1);
+      var opt = {expires: dt};
+      $cookies.put("rapicaDataCount", $scope.rapica.length, opt);
       angular.forEach($scope.rapica, function(e, idx) {
-        $cookies.put("rapicaData"+idx, angular.toJson(e));
+        $cookies.put("rapicaData"+idx, angular.toJson(e), opt);
       });
     };
     
