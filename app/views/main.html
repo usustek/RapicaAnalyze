@@ -1,14 +1,21 @@
 <link href='https://fonts.googleapis.com/css?family=Anonymous+Pro:700' rel='stylesheet' type='text/css'>
 <div class="container">
-  <div class="jumbotron">
+  <div class="page-header">
     <h2>ラピカの履歴データ</h2>
-    <input type="button" value="Parse" ng-click="parse()" style="height:32px;font-size:20px"></input>
-    <input type="button" value="Clear" ng-click="clear()" style="height:32px;font-size:20px"></input>
-    <input type="button" value="Add" ng-click="add()" style="height:32px;font-size:20px"></input>
-    <BR>
-    <input ng-repeat-start="r in rapica" style="width:20em;height:32px;font-size:20px;font-family: 'Anonymous Pro', ;" ng-model="rapica[$index].hexData"></input>
-    <input type="button" value="+" ng-click="add($index)"></input>
-    <input ng-repeat-end type="button" value="x" ng-click="remove($index)"></input>
+    <div class="btn-group btn-group-sm">
+      <button type="button" class="btn btn-primary" ng-click="parse()">Parse</button>
+      <button type="button" class="btn btn-default" ng-click="clear()">Clear</button>
+      <button type="button" class="btn btn-default" ng-click="add()">Add</button>
+    </div>
+    <div class="input-group input-group-sm" ng-repeat="r in rapica" >
+      <span class="input-group-addon">バイナリ</span>
+      <!--<input type="text" class="form-control" ng-model="rapica[$index].hexData"></input>-->
+      <input type="text" class="form-control" style="height:30px;font-size:20px;font-family: 'Anonymous Pro', ;" ng-model="rapica[$index].hexData"></input>
+      <span class="input-group-btn">
+        <button type="button" class="btn" ng-click="add($index)">+</button>
+        <button type="button" class="btn" ng-click="remove($index)">x</button>
+      </span>
+    </div>
   </div>
   <div>
     <h2>履歴データの解析結果</h2>
