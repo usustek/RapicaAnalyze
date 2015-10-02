@@ -493,6 +493,10 @@ angular.module('rapicaAnalyzeApp')
         0x309590: ["桜島フェリー", "桜島港"],
         0x3095a0: ["桜島フェリー", "鹿児島港"],
   
+        0x1FEA00: ["", "水族館口"],
+        0x1FEB90: ["", "金生町"],
+        0x1FECD0: ["", "高見馬場"],
+        0x200350: ["", "みやこ迫"],
       },
       getStopCity : function(code) {
         return (this.stopCity[code] !== undefined)
