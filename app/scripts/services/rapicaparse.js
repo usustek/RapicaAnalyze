@@ -94,9 +94,9 @@ angular.module('rapicaAnalyzeApp')
           res.busGroup = "0x" + ("0000"+ val.toString(16).toUpperCase()).substr(-4);
         }
         else{
-          val = (hexs[5] << 8) | hexs[6];
-          res.point["busGroup"] = [10, 13];
-          res.busGroup = "0x" + ("0000" + val.toString(16).toUpperCase()).substr(-4);
+          val = (hexs[7] << 16) | (hexs[8] << 8) | hexs[9];
+          res.point["busGroup"] = [14,19];
+          res.busGroup = "0x" + ("000000"+ val.toString(16).toUpperCase()).substr(-6);
         }
       },
       
@@ -127,9 +127,9 @@ angular.module('rapicaAnalyzeApp')
           res.device = "0x" + ("000000" + val.toString(16).toUpperCase()).substr(-6);
         } else {
           // いわさきは系統と装置は逆？？？
-          val = (hexs[7] << 16) | (hexs[8] << 8) | hexs[9];
-          res.point["device"] = [14,19];
-          res.device = "0x" + ("000000"+ val.toString(16).toUpperCase()).substr(-6);
+          val = (hexs[5] << 8) | hexs[6];
+          res.point["device"] = [10, 13];
+          res.device = "0x" + ("0000" + val.toString(16).toUpperCase()).substr(-4);
         }
       },
       
