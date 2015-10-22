@@ -1,13 +1,13 @@
 <link href='https://fonts.googleapis.com/css?family=Anonymous+Pro:700' rel='stylesheet' type='text/css'>
 <div class="container">
-  <div class="page-header">
+  <div class="page-header" name="inputs" >
     <h2>ラピカの履歴データ</h2>
     <div class="btn-group btn-group-sm">
       <button type="button" class="btn btn-primary" ng-click="parse()">Parse</button>
       <button type="button" class="btn btn-default" ng-click="clear()">Clear</button>
       <button type="button" class="btn btn-default" ng-click="add()">Add</button>
     </div>
-    <div class="input-group input-group-sm" ng-repeat="r in rapica" >
+    <div class="input-group input-group-sm" ng-repeat="r in rapica">
       <span class="input-group-addon">バイナリ</span>
       <!--<input type="text" class="form-control" ng-model="rapica[$index].hexData"></input>-->
       <input type="text" class="form-control" style="height:30px;font-size:20px;font-family: 'Anonymous Pro', ;" ng-model="rapica[$index].hexData"></input>

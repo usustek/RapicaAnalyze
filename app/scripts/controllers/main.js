@@ -8,7 +8,7 @@
  * Controller of the rapicaAnalyzeApp
  */
 angular.module('rapicaAnalyzeApp')
-  .controller('MainCtrl', function ($scope, $window, $cookies, RapicaParse) {
+  .controller('MainCtrl', function ($scope, $window, $cookies, $document, RapicaParse) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -22,7 +22,8 @@ angular.module('rapicaAnalyzeApp')
     $scope.parsedData2 = null;
     $scope.parseHexStr1 = null;
     $scope.parseHexStr2 = null;
-
+    $scope.added = null;
+    
     $scope.clear = function() {
       $scope.rapica = [{}];
     };
@@ -32,6 +33,7 @@ angular.module('rapicaAnalyzeApp')
         $scope.rapica.splice(insIdx, 1, {}, $scope.rapica[insIdx]);
       }else{
         $scope.rapica.push({});
+        $scope.added = $scope.rapica.count -1;
       }
     };
     
@@ -128,7 +130,17 @@ angular.module('rapicaAnalyzeApp')
         }
       }
     };
-    
+
+    $scope.$on('$viewContetLoaded', function(){
+      if($scope.added !== null){
+        var elms = $document.find("input");
+        if(elms.count > $scope.added){
+          elms[$scope.added].focus();
+        }
+        $scope.added = null;
+      } 
+    });
+        
     $scope.refreshData = function(){
         // 強制的にデータを反映
         if(!$scope.$$phase){

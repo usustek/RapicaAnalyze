@@ -503,5 +503,39 @@ angular.module('rapicaAnalyzeApp')
               ? this.stopCity[code][1]
               : "";
       },
+      
+      stopIwasaki : {
+              0x002715 : ["71番線", {
+                0x0019 : "古別府",        
+              }],
+              0x004E54 : ["63番線", {
+                0x0005 : "中草牟田",
+                0x001A : "中草牟田",
+                0x001D : "草牟田",
+                0x0022 : "高見馬場",
+                0x0023 : "天文館",
+              }],
+              0x004E7C : ["74番線",{
+                0x0004 : "永吉",
+                0x000D : "鹿児島中央駅",      
+              }],
+      },
+
+      getGroupIwasaki:function(grpCode){
+        return (this.stopIwasaki[grpCode] !== undefined)
+                ? this.stopIwasaki[grpCode][0]
+                : "";        
+      },       
+      getStopIwasaki:function(grpCodeHex, stopCode) {
+        var grpCode = parseInt(grpCodeHex.substr(2), 16);
+        
+        if (this.stopIwasaki[grpCode] !== undefined) {
+          var stop = (this.stopIwasaki[grpCode][1])[stopCode];
+          if (stop !== undefined) {
+            return stop;
+          }
+        }
+        return "";
+      },
     }
   });

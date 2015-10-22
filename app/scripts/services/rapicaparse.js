@@ -97,6 +97,10 @@ angular.module('rapicaAnalyzeApp')
           val = (hexs[7] << 16) | (hexs[8] << 8) | hexs[9];
           res.point["busGroup"] = [14,19];
           res.busGroup = "0x" + ("000000"+ val.toString(16).toUpperCase()).substr(-6);
+          var nm = RapicaData.getGroupIwasaki(val);
+          if ( (nm !== null) && (nm !== '')){
+            res.busGroup += " " + nm;
+          }
         }
       },
       
@@ -116,6 +120,10 @@ angular.module('rapicaAnalyzeApp')
           val = (hexs[10] << 8) | hexs[11];
           res.point["busStop"] = [20,23];
           res.busStop = "0x" + ("0000" + val.toString(16).toUpperCase()).substr(-4);
+          var nm = RapicaData.getStopIwasaki(res.busGroup, val);
+          if ( (nm !== null) && (nm !== '')){
+            res.busStop += " " + nm;
+          }
         }
       },
       
