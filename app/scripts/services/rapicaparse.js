@@ -58,20 +58,24 @@ angular.module('rapicaAnalyzeApp')
       parseCorp : function(res, hex1) {
         var corp = hex1 >>> 4;
 
+        res.isRapica = false;
         res.isCity = false;
         res.point["corp"] = [6,7];
                 
         switch(corp){
           case 1:
+            res.isRapica = true;
             res.isCity = true;
             res.corp = "交通局";
             break;
           case 2:
-            res.isCity = true;
+            res.isRapica = true;
+            res.isCity = false;
             res.corp = "南国交通";
             break;
           case 3: 
-            res.isCity = true;
+            res.isRapica = true;
+            res.isCity = false;
             res.corp = "JR九州";
             break;
           case 4:
@@ -88,16 +92,21 @@ angular.module('rapicaAnalyzeApp')
       
       parseBusGroup : function(res, hexs) {
         var val = null;
-        if(res.isCity) {
+        var nm = null;
+        if(res.isRapica) {
           val = (hexs[7] << 8 ) | hexs[8];
           res.point["busGroup"] = [14,17];
           res.busGroup = "0x" + ("0000"+ val.toString(16).toUpperCase()).substr(-4);
+          nm = RapicaData.getGroupCity(val, res.isCity);
+          if ( (nm !== null) && (nm !== '')){
+            res.busGroup += " " + nm;
+          }
         }
         else{
           val = (hexs[7] << 16) | (hexs[8] << 8) | hexs[9];
           res.point["busGroup"] = [14,19];
           res.busGroup = "0x" + ("000000"+ val.toString(16).toUpperCase()).substr(-6);
-          var nm = RapicaData.getGroupIwasaki(val);
+          nm = RapicaData.getGroupIwasaki(val);
           if ( (nm !== null) && (nm !== '')){
             res.busGroup += " " + nm;
           }
@@ -106,12 +115,13 @@ angular.module('rapicaAnalyzeApp')
       
       parseBusStop : function(res, hexs){
         var val = null;
+        var nm = null;
         
-        if(res.isCity){
+        if(res.isRapica){
           val = (hexs[4] << 16) | (hexs[5] << 8) | hexs[6];
           res.point["busStop"] = [8,13];
           res.busStop = "0x" + ("000000" + val.toString(16).toUpperCase()).substr(-6);
-          var nm = RapicaData.getStopCity(val);
+          nm = RapicaData.getStopCity(val);
           if ( (nm !== null) && (nm !== '')){
             res.busStop += " " + nm;
           }
@@ -120,7 +130,7 @@ angular.module('rapicaAnalyzeApp')
           val = (hexs[10] << 8) | hexs[11];
           res.point["busStop"] = [20,23];
           res.busStop = "0x" + ("0000" + val.toString(16).toUpperCase()).substr(-4);
-          var nm = RapicaData.getStopIwasaki(res.busGroup, val);
+          nm = RapicaData.getStopIwasaki(res.busGroup, val);
           if ( (nm !== null) && (nm !== '')){
             res.busStop += " " + nm;
           }
@@ -129,7 +139,7 @@ angular.module('rapicaAnalyzeApp')
       
       parseDevice : function(res, hexs){
         var val = null;
-        if (res.isCity) {
+        if (res.isRapica) {
           val = (hexs[9] << 16) | (hexs[10] << 8) | hexs[11];
           res.point["device"] = [18, 23];
           res.device = "0x" + ("000000" + val.toString(16).toUpperCase()).substr(-6);

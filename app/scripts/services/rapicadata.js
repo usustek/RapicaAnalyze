@@ -499,32 +499,63 @@ angular.module('rapicaAnalyzeApp')
         0x200350: ["", "みやこ迫"],
       },
       getStopCity : function(code) {
-        return (this.stopCity[code] !== undefined)
-              ? this.stopCity[code][1]
-              : "";
+        return (this.stopCity[code] !== undefined) ? this.stopCity[code][1] : "";
       },
       
+      groupCity : {
+        0x01FF : "5-2番線",
+        // 0x0322 : "8番線",
+        // 0x047F : "11番線",
+        // 0x0976 : "24番線", 
+        // 0x097F : "24番線", 
+        // 0x0980 : "24番線",
+        // 0x0CE6 : "33番線",
+      },
+      getGroupCity : function(code, isCity){
+        if (this.groupCity[code] !== undefined) {
+          return this.groupCity[code];
+        }
+        else if (isCity) {
+          var grp = Math.floor(code / 100);
+          switch(grp){
+            case 0: // 市電
+              return "";
+            case 90: // 桜島フェリー
+              return "桜島フェリー";
+            default:
+              return grp.toString() + "番線";
+          }
+        }
+        return "";
+      },
       stopIwasaki : {
               0x002715 : ["71番線", {
                 0x0019 : "古別府",        
               }],
               0x004E54 : ["63番線", {
-                0x0005 : "中草牟田",
+                0x0005 : "中草牟田", // ?
                 0x001A : "中草牟田",
+                0x001C : "中草牟田",
                 0x001D : "草牟田",
                 0x0022 : "高見馬場",
                 0x0023 : "天文館",
+              }],
+              0x004E5A : ["63番線", {
+                0x001B : "草牟田",
+                0x0024 : "金生町",
               }],
               0x004E7C : ["74番線",{
                 0x0004 : "永吉",
                 0x000D : "鹿児島中央駅",      
               }],
+              0x004E84 : ["57番線",{
+                0x000B : "護国神社",
+                0x0009 : "草牟田",
+              }],
       },
 
       getGroupIwasaki:function(grpCode){
-        return (this.stopIwasaki[grpCode] !== undefined)
-                ? this.stopIwasaki[grpCode][0]
-                : "";        
+        return (this.stopIwasaki[grpCode] !== undefined) ? this.stopIwasaki[grpCode][0] : "";
       },       
       getStopIwasaki:function(grpCodeHex, stopCode) {
         var grpCode = parseInt(grpCodeHex.substr(2), 16);
@@ -537,5 +568,5 @@ angular.module('rapicaAnalyzeApp')
         }
         return "";
       },
-    }
+    };
   });

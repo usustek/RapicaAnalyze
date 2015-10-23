@@ -1,3 +1,4 @@
+/* global tableRows */
 'use strict';
 
 /**
@@ -8,7 +9,7 @@
  * Controller of the rapicaAnalyzeApp
  */
 angular.module('rapicaAnalyzeApp')
-  .controller('MainCtrl', function ($scope, $window, $cookies, $document, RapicaParse) {
+  .controller('MainCtrl', function ($scope, $window, $cookies, $document, $timeout, RapicaParse) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -31,9 +32,10 @@ angular.module('rapicaAnalyzeApp')
     $scope.add = function(insIdx) {
       if(insIdx !== undefined){
         $scope.rapica.splice(insIdx, 1, {}, $scope.rapica[insIdx]);
+        $scope.setFocusDelayed(insIdx);
       }else{
         $scope.rapica.push({});
-        $scope.added = $scope.rapica.count -1;
+        $scope.setFocusDelayed($scope.rapica.length -1);
       }
     };
     
@@ -61,7 +63,7 @@ angular.module('rapicaAnalyzeApp')
       $scope.refreshData();
     };
 
-    $scope.createHexStr = function(hexStr, dispIdx){
+    $scope.createHexStr = function(hexStr/*, dispIdx*/){
       var str = "";
       hexStr.split('').forEach(function(element, index) {
         str += "<span class='char" + index + "'>" + element + "</span>";
@@ -131,16 +133,15 @@ angular.module('rapicaAnalyzeApp')
       }
     };
 
-    $scope.$on('$viewContetLoaded', function(){
-      if($scope.added !== null){
+    $scope.setFocusDelayed = function(rowIdx){
+      $timeout(function(){
         var elms = $document.find("input");
-        if(elms.count > $scope.added){
-          elms[$scope.added].focus();
+        if(elms.length > rowIdx) {
+          elms[rowIdx].focus();
         }
-        $scope.added = null;
-      } 
-    });
-        
+      }, 200);
+    };
+    
     $scope.refreshData = function(){
         // 強制的にデータを反映
         if(!$scope.$$phase){
@@ -166,7 +167,7 @@ angular.module('rapicaAnalyzeApp')
       } catch (error) {
       }
       
-      if($scope.rapica.length == 0){
+      if($scope.rapica.length === 0){
         $scope.rapica.push({});
       } else {
         $scope.parse();
