@@ -79,10 +79,8 @@ angular.module('rapicaAnalyzeApp')
             res.corp = "JR九州";
             break;
           case 4:
-            res.corp = "いわさき";
-            break;
           case 5:
-            res.corp = "林田";
+            res.corp = "いわさき";
             break;
           default:
             res.corp = "不明";
@@ -153,38 +151,20 @@ angular.module('rapicaAnalyzeApp')
       
       parseUsing : function(res, hexs){
         res.point["using"] = [24,25];
-        switch(hexs[12]){
-          case 0x00:
-            res.using = "作成";
-            break;
-          case 0x10:
-            res.using = "登録";
-            break;
-          case 0x20:
-            res.using = "積増";
-            break;
-          case 0x30:
-            res.using = "乗車";
-            break;
-          case 0x40:
-            res.using = "積増";
-            break;
-          case 0x41:
-            res.using = "降車";
-            break;
-          case 0x43:
-            res.using = "清算";
-            break;
-          case 0x44:
-            res.using = "降車(割)";
-            break;
-          case 0x47:
-            res.using = "降車(船)";
-            break;
-          default:
-            res.using = "不明";
-            break;
-        }
+        var hex2using = {
+          0x00: "作成",
+          0x10: "登録",
+          0x20: "積増",
+          0x30: "乗車",
+          0x40: "積増",
+          0x41: "降車",
+          0x43: "清算",
+          0x44: "降車(割)",
+          0x47: "降車(船)",
+        };
+        
+        var val = hex2using[hexs[12]];
+        res.using = (val !== undefined ) ? val : "不明";
       },
       
       parseRemain : function(res, hexs){
