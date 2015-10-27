@@ -143,9 +143,9 @@ angular.module('rapicaAnalyzeApp')
           res.device = "0x" + ("000000" + val.toString(16).toUpperCase()).substr(-6);
         } else {
           // いわさきは系統と装置は逆？？？
-          val = (hexs[5] << 8) | hexs[6];
-          res.point["device"] = [10, 13];
-          res.device = "0x" + ("0000" + val.toString(16).toUpperCase()).substr(-4);
+          val = (hexs[4] << 16) | (hexs[5] << 8) | hexs[6];
+          res.point["device"] = [8, 13];
+          res.device = "0x" + ("000000" + val.toString(16).toUpperCase()).substr(-6);
         }
       },
       

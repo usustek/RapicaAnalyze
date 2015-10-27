@@ -129,14 +129,17 @@ angular.module('rapicaAnalyzeApp')
               }
             });
           }
+          $event.stopPropagation();
         }
       }
     };
 
     $scope.setFocusDelayed = function(rowIdx){
       $timeout(function(){
+        var dets = $document.find("details");
         var elms = $document.find("input");
         if(elms.length > rowIdx) {
+          dets[rowIdx].setAttribute('open', '');
           elms[rowIdx].focus();
         }
       }, 200);

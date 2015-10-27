@@ -2,24 +2,12 @@
 <div class="container">
   <div class="page-header" name="inputs" >
     <h2>ラピカの履歴データ</h2>
-    <div class="btn-group btn-group-sm">
-      <button type="button" class="btn btn-primary" ng-click="parse()">Parse</button>
-      <button type="button" class="btn btn-default" ng-click="clear()">Clear</button>
-      <button type="button" class="btn btn-default" ng-click="add()">Add</button>
-    </div>
-    <div class="input-group input-group-sm" ng-repeat="r in rapica">
-      <span class="input-group-addon">バイナリ</span>
-      <!--<input type="text" class="form-control" ng-model="rapica[$index].hexData"></input>-->
-      <input type="text" class="form-control" style="height:30px;font-size:20px;font-family: 'Anonymous Pro', ;" ng-model="rapica[$index].hexData"></input>
-      <span class="input-group-btn">
-        <button type="button" class="btn" ng-click="add($index)">+</button>
-        <button type="button" class="btn" ng-click="remove($index)">x</button>
-      </span>
-    </div>
-  </div>
-  <div>
-    <h2>履歴データの解析結果</h2>
-    <table class="table" ng-dblclick="onselect('')">
+      <div align="left" class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-primary" ng-click="parse()">Parse</button>
+        <button type="button" class="btn btn-default" ng-click="clear()">Clear</button>
+        <button type="button" class="btn btn-default" ng-click="add()">Add</button>
+      </div>
+      <table class="table" ng-dblclick="onselect('')">
       <thead ng-click="onselect('')">
         <th>要素</th>
         <th colspan="{{rapica.length}}">データ</th>
@@ -27,11 +15,28 @@
       <tbody id="tableRows">
         <tr ng-repeat="r in rapica">
           <td ng-if="$index === 0" rowspan="{{rapica.length}}"><b>履歴データ</b></td>
-          <td class="hexData"
-              colSpan="{{rapica.length}}"
-              ng-click="onselectHex($event, $index)"
-              ng-bind-html="r.hexDataHtml"
-              style="font-size:20px;font-family: 'Anonymous Pro', ;"></td>
+          <td colSpan="{{rapica.length}}"
+              style="font-size:20px;font-family: 'Anonymous Pro', ;">
+              <details>
+                <summary ng-click="return false;">
+                  <span class="hexData"
+                        ng-bind-html="r.hexDataHtml"
+                        ng-click="onselectHex($event, $index)"
+                  />
+                </summary>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-addon">入力</span>
+                  <input type="text"
+                         width="100%" 
+                         style="height:30px;font-size:20px;font-family: 'Anonymous Pro', ;" 
+                         ng-model="rapica[$index].hexData"></input>
+                  <span class="input-group-btn">
+                    <!--<button type="button" class="btn" ng-click="add($index)">+</button>-->
+                    <button type="button" class="btn" ng-click="remove($index)">x</button>
+                  </span>
+                </div>
+              </details>
+          </td>
         </tr>
         <tr class="date" ng-click="onselect('date')">
           <td><b>日付</b></td>
